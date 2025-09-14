@@ -2,7 +2,6 @@ from fastapi_mail import ConnectionConfig, FastMail, MessageSchema, MessageType
 from pydantic import EmailStr
 from dotenv import load_dotenv
 import os
-
 load_dotenv()
 
 conf = ConnectionConfig(
@@ -19,18 +18,18 @@ conf = ConnectionConfig(
 
 
 async def send_email(subject: str, recipients: list[EmailStr], body_text: str):
-    html = f"""
-    <h2>{subject}</h2>
-    <br>
-    <p>{body_text}</p>
-    <br>
-    <br>
-    <br>
-    <p>Best regards</p>
-    <p>Aero Bound Ventures</p>
-    """
-    message = MessageSchema(
-        subject=subject, recipients=recipients, body=html, subtype=MessageType.html
-    )
-    fm = FastMail(conf)
-    await fm.send_message(message)
+    try:
+        html = f"""
+        <h2>{subject}</h2>
+        <br>
+        <p>{body_text}</p>
+        <br><p>Best regards</p>
+        <p>Aero Bound Ventures</p>
+        """
+        message = MessageSchema(
+            subject=subject, recipients=recipients, body=html, subtype=MessageType.html
+        )
+        fm = FastMail(conf)
+        await fm.send_message(message)
+    except Exception as e:
+        print(f"Email sending failed: {e}")

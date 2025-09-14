@@ -13,3 +13,6 @@ class UserRead(BaseModel):
 
     class Config:
         from_attributes = True  # Useful when returning sql models
+class Token(BaseModel):
+    access_token: str
+    token_type: str
